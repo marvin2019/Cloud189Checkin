@@ -11,18 +11,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    # 【唯一改动】删除了原来的 `environment: user` 这一行。
-    # 原因：该仓库是 fork 仓库，job 引用 environment 会触发 GitHub 的部署审批门禁，
-    # job 从未被创建（run 里 jobs 为空），最终 conclusion = action_required，
-    # GitHub 因此发出 "Cloud check in action: no jobs were run" 邮件。
-    #
-    # ⚠️ 配套必须做的一步：
-    # 原账号/推送变量都配在 Settings → Environments → user 里，
-    # 删掉 environment 后 `secrets` context 就只读取仓库级 secrets，
-    # 所以要把 user 环境里的 TY_ACCOUNTS(或 TY_USERNAME_n/TY_PASSWORD_n)、
-    # SENDKEY、TELEGRAM_*、WECOM_*、WX_PUSHER_*、PUSH_PLUS_TOKEN、
-    # WPUSH_*、SHOWDOC_KEY、BARK_* 等变量，
-    # 全部搬到 Settings → Secrets and variables → Actions → Repository secrets。
+    environment: user
     steps:
       - name: 🔀 random delay 0-300 seconds
         run: sleep $((RANDOM % 301))
